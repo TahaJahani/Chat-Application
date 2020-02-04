@@ -43,7 +43,7 @@ void createSocket() {
     err = WSAStartup(wVersionRequested, &wsaData);
     if (err != 0) {
         // Tell the user that we could not find a usable Winsock DLL.
-        //printf("WSAStartup failed with error: %d\n", err);
+        printf("WSAStartup failed with error: %d\n", err);
         return 1;
     }
 
@@ -51,9 +51,9 @@ void createSocket() {
     server_socket = socket(AF_INET, SOCK_STREAM, 6);
 	if (server_socket == INVALID_SOCKET)
     {
-        //wprintf(L"socket function failed with error = %d\n", WSAGetLastError() );
+        wprintf(L"socket function failed with error = %d\n", WSAGetLastError() );
     }else{}
-        //printf("Socket successfully created..\n");
+        printf("Socket successfully created..\n");
 
     // Assign IP and port
     memset(&server, 0, sizeof(server));
@@ -64,30 +64,30 @@ void createSocket() {
     // Bind newly created socket to given IP and verify
     if ((bind(server_socket, (SA *)&server, sizeof(server))) != 0)
     {
-        //printf("Socket binding failed...\n");
+        printf("Socket binding failed...\n");
         exit(0);
     }
     else
-        //printf("Socket successfully bound..\n");
+        printf("Socket successfully bound..\n");
 
     // Now server is ready to listen and verify
     if ((listen(server_socket, 5)) != 0)
     {
-        //printf("Listen failed...\n");
+        printf("Listen failed...\n");
         exit(0);
     }
     else{}
-        //printf("Server listening..\n");
+        printf("Server listening..\n");
 
     // Accept the data packet from client and verify
     int len = sizeof(client);
     client_socket = accept(server_socket, (SA *)&client, &len);
     if (client_socket < 0)
     {
-        //printf("Server accceptance failed...\n");
+        printf("Server accceptance failed...\n\n");
         exit(0);
     }
     else{}
-        //printf("Server acccepted the client..\n");
+        printf("Server acccepted the client..\n\n");
 }
 //-------------------------------

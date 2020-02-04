@@ -23,3 +23,4 @@ char* addUserToChannel(char* channel, char* token);
 char* removeUserFromChannel(int userIndex);
 char* findChannelMembers(int userIndex);
 char* logout(int index);
+char* searchMemebers(int index, char* name);

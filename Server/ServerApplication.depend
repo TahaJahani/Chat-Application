@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1580156410 source:j:\taha\chat application\server application\serverapplication\main.c
+1580591116 source:j:\taha\chat application\server application\serverapplication\main.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
@@ -9,7 +9,6 @@
 	"connection.h"
 	"messages.h"
 	"files.h"
-	"cJSON.h"
 
 1579958708 source:j:\taha\chat application\server application\serverapplication\functions.c
 	<stdio.h>
@@ -18,17 +17,15 @@
 	<string.h>
 	<winsock2.h>
 
-1575929324 j:\taha\chat application\server application\serverapplication\cjson.h
-	<stddef.h>
-
-1575929324 j:\taha\chat application\server application\serverapplication\cjson.c
-	<string.h>
+1580583606 j:\taha\chat application\server application\serverapplication\cjson.h
 	<stdio.h>
-	<math.h>
 	<stdlib.h>
-	<limits.h>
-	<ctype.h>
-	<locale.h>
+	<string.h>
+
+1580653906 j:\taha\chat application\server application\serverapplication\cjson.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 	"cJSON.h"
 
 1579958064 j:\taha\chat application\server application\serverapplication\functions.c
@@ -48,7 +45,7 @@
 
 1580156788 j:\taha\chat application\server application\serverapplication\messages.h
 
-1580157448 source:j:\taha\chat application\server application\serverapplication\messages.c
+1580591270 source:j:\taha\chat application\server application\serverapplication\messages.c
 	<stdio.h>
 	<stdbool.h>
 	<stdlib.h>
@@ -61,13 +58,65 @@
 1580157436 j:\taha\chat application\server application\serverapplication\files.h
 	"cJSON.h"
 
-1580156574 source:j:\taha\chat application\server application\serverapplication\files.c
+1580649156 source:j:\taha\chat application\server application\serverapplication\files.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-	"cJSON.h"
 	"cJSON.c"
 	<dirent.h>
 
 1580053696 j:\taha\chat application\server application\serverapplication\onlineusers.h
+
+1580790768 source:c:\users\taha\desktop\chat application\server application\serverapplication\connection.c
+	<stdio.h>
+	<stdbool.h>
+	<stdlib.h>
+	<string.h>
+	<winsock2.h>
+
+1580790782 source:c:\users\taha\desktop\chat application\server application\serverapplication\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	<winsock2.h>
+	<conio.h>
+	"connection.h"
+	"messages.h"
+	"files.h"
+
+1580156824 c:\users\taha\desktop\chat application\server application\serverapplication\connection.h
+
+1580156788 c:\users\taha\desktop\chat application\server application\serverapplication\messages.h
+
+1580770467 c:\users\taha\desktop\chat application\server application\serverapplication\files.h
+	"cJSON.h"
+
+1580583606 c:\users\taha\desktop\chat application\server application\serverapplication\cjson.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1580790634 source:c:\users\taha\desktop\chat application\server application\serverapplication\messages.c
+	<stdio.h>
+	<stdbool.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	"connection.h"
+	"files.h"
+
+1580790704 source:c:\users\taha\desktop\chat application\server application\serverapplication\files.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"cJSON.c"
+	<dirent.h>
+
+1580653906 c:\users\taha\desktop\chat application\server application\serverapplication\cjson.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"cJSON.h"
 

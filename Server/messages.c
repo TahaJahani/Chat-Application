@@ -96,9 +96,13 @@ char* checkMessage(char* message) {
                 response = makeMessageJSON("Error","Channel name is invalid");
         }
         else if(flag == 1)
+        {
             response = makeMessageJSON("Error", "Token is invalid");
+        }
         else if(flag == -1)
+        {
             response = makeMessageJSON("Error", "User already joined in a channel");
+        }
     }
     else if(strcmp(code, "send") == 0) {
         sscanf(message,"%s %[^,]%s %[^\n]",code,newMessage,tmp,token);
@@ -154,8 +158,24 @@ char* checkMessage(char* message) {
         int index = findUserIndex(token);
         response = logout(index);
         index = findUserIndex(token);
-        printf("Index = %d\n",index);
+        //printf("Index = %d\n",index);
     }
+    else if(strcmp(code, "search") == 0) {
+        //printf("Received: %s\n", message);
+        sscanf(message,"%s %s %[^,]%s %s",code,code,newMessage,tmp,token);
+        //printf("Token: %s, name: %s",token, newMessage);
+        int flag = checkToken(token);
+        if(flag == 0)
+            response = makeMessageJSON("Error", "User is not in a channel");
+        else if(flag == 1)
+            response = makeMessageJSON("Error", "Token is invalid");
+        else
+        {
+            int index = findUserIndex(token);
+            response = searchMemebers(index, newMessage);
+        }
+    }
+    //printf("%s\n",response);
     return response;
 }
 //-------------------------------

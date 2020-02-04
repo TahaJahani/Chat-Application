@@ -7,7 +7,6 @@
 #include "connection.h"
 #include "messages.h"
 #include "files.h"
-#include "cJSON.h"
 #define PORT 12345
 #define SA struct sockaddr
 //-------Variables---------------
@@ -28,10 +27,11 @@ int main() {
     {
         createSocket();
         char* buffer = receive(client_socket);
-        //puts("Received:\n\t");
-        //puts(buffer);
+        puts("\tReceived:\n\t");
+        puts(buffer);
         char* response = checkMessage(buffer);
-        //puts("Sent:\n\t");
+        puts("\tSent:\n\t");
+        puts(response);
         sendResponse(response);
         //sendMessage(respons);
         free(buffer);

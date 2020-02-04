@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <math.h>
 #include <time.h>
 #include <winsock2.h>
-#include "cJSON.h"
+//#include "cJSON.h"
 #include "cJSON.c"
 #define MAX 80
 #define PORT 12345
@@ -77,8 +78,11 @@ int main(){
         case '3':
             viewMembers();
             break;
-        case '4':
+        case '5':
             leaveChannel();
+            break;
+        case '4':
+            searchMenu();
             break;
         //default:
             //printf("Wrong Choice, Try Again");
@@ -87,6 +91,24 @@ int main(){
         system("cls");
     }
     return 0;
+}
+int changeCursor(int num) {
+    char c1 = getch();
+    if(c1 == 13)
+    {
+        return -2;
+    }
+    char c2 = getch();
+    if(c1 == -32 && c2 == 72)
+    {
+        //up
+        num --;
+    }else if(c1 == -32 && c2 == 80)
+    {
+        //down
+        num ++;
+    }
+    return num;
 }
 void socketInitialize(){
     //int client_socket, server_socket;
@@ -145,18 +167,20 @@ void delay(int number_of_seconds){
 }
 int checkError(cJSON* json, char operation){
     setColor(10);
-    cJSON* Type = cJSON_GetObjectItemCaseSensitive(json, "type");
+    cJSON* Type = cJSON_GetObjectItem(json, "type");
     cJSON* Content;
     char* content;
     if(operation != '2' && operation != '3')
     {
-        Content = cJSON_GetObjectItemCaseSensitive(json, "content");
+        Content = cJSON_GetObjectItem(json, "content");
         content = Content -> valuestring;
     }
     char* type = Type -> valuestring;
     if(strcmp(type ,"Error") == 0)
     {
+        setColor(12);
         printf("%s",content);
+        setColor(7);
         return 0;
     }else
     {
@@ -183,8 +207,13 @@ int checkError(cJSON* json, char operation){
         {
             printf("Successfully Left Channel");
             return 1;
-        }else if(operation =='3')
+        }else if(operation == 's')
         {
+            printf("Message Sent Successfully");
+            return 1;
+        } else if(operation =='3')
+        {
+
             return 1;
         }else if(operation =='2')
         {
@@ -257,33 +286,83 @@ void registerMenu(){
     setColor(7);
     return;
 }
-void showAccountMenu(){
-    setColor(124);
+//---------------------
+void printAccountMenu(int one, int two, int three, int four, int five) {
+    system("cls");
+    setColor(one);
     printf("***MAIN MENU MENU***\n");
-    setColor(7);
+    setColor(two);
     printf("Account Menu:\n");
-    printf("1. Register: (r)\n");
-    printf("2. Login: (l)\n");
-    printf("Enter Your Option (r/l): ");
-    while(scanf(" %[rl]c",&option) == 0) {
-        fflush(stdin);
+    setColor(three);
+    printf("1. Register\n");
+    setColor(four);
+    printf("2. Login\n");
+    setColor(five);
+}
+void showAccountMenu(){
+    printAccountMenu(124,7,7,7,7);
+    int num = 0;
+    while(num != -2)
+    {
+        num = changeCursor(num);
+        if(num != -2)
+        {
+            if(num >= 0)
+                num %= 2;
+            else
+                num += 2;
+        }
+        if(num == 0) {
+            option = 'r';
+            printAccountMenu(124,7,240,7,7);
+        }else if(num == 1) {
+            option = 'l';
+            printAccountMenu(124,7,7,240,7);
+        }
     }
     return;
 }
-void userMenu(){
-    setColor(59);
+//---------------------
+void printUserMenu(int one,int two, int three, int four, int five) {
+    system("cls");
+    setColor(one);
     printf("***USER MENU***\n");
-    setColor(7);
-    printf("1. Create Channel (c)\n");
-    printf("2. Join Channel (j)\n");
-    printf("3. Quit (q)\n");
-    printf("Enter Your Option:(c/j/q) ");
-    while(scanf(" %[cjq]c",&option) == 0) {
-        fflush(stdin);
+    setColor(two);
+    printf("1. Create Channel\n");
+    setColor(three);
+    printf("2. Join Channel\n");
+    setColor(four);
+    printf("3. Quit\n");
+    setColor(five);
+}
+void userMenu(){
+    printUserMenu(59,7,7,7,7);
+    int num = 0;
+    while(num != -2)
+    {
+        num = changeCursor(num);
+        if(num != -2)
+        {
+            if(num >= 0)
+                num %= 3;
+            else
+                num += 3;
+        }
+        if(num == 0) {
+            option = 'c';
+            printUserMenu(59,240,7,7,7);
+        }else if(num == 1) {
+            option = 'j';
+            printUserMenu(59,7,240,7,7);
+        }else if(num == 2) {
+            option = 'q';
+            printUserMenu(59,7,7,240,7);
+        }
     }
     //scanf(" %c",&option);
     return;
 }
+//---------------------
 void createChannel(){
     setColor(236);
     printf("***Create Channel***\n");
@@ -344,19 +423,94 @@ void joinChannel(){
     delay(3);
     return;
 }
-void sendMenu(){
-    setColor(79);
+//---------------------
+void printSendMenu(int one, int two, int three, int four, int five, int six, int seven) {
+    system("cls");
+    setColor(one);
     printf("***Channel Menu***\n");
-    setColor(7);
-    printf("1. Send Message (1)\n");
-    printf("2. Refresh (2)\n");
-    printf("3. Members (3)\n");
-    printf("4. Leave (4)\n");
-    printf("Enter Your Option: (1/2/3/4) ");
-    while(scanf(" %[1234]c",&option) == 0) {
-        fflush(stdin);
+    setColor(two);
+    printf("1. Send Message\n");
+    setColor(three);
+    printf("2. Refresh\n");
+    setColor(four);
+    printf("3. Members\n");
+    setColor(five);
+    printf("4. Search Username\n");
+    setColor(six);
+    printf("5. Leave\n");
+    setColor(seven);
+}
+void sendMenu(){
+    printSendMenu(79,7,7,7,7,7,7);
+    int num = 0;
+    while(num != -2)
+    {
+        num = changeCursor(num);
+        if(num != -2)
+        {
+            if(num >= 0)
+                num %= 5;
+            else
+                num += 5;
+        }
+        if(num == 0) {
+            option = '1';
+            printSendMenu(79,240,7,7,7,7,7);
+        }else if(num == 1) {
+            option = '2';
+            printSendMenu(79,7,240,7,7,7,7);
+        }else if(num == 2) {
+            option = '3';
+            printSendMenu(79,7,7,240,7,7,7);
+        }else if(num == 3) {
+            option = '4';
+            printSendMenu(79,7,7,7,240,7,7);
+        }else if(num == 4) {
+            option = '5';
+            printSendMenu(79,7,7,7,7,240,7);
+        }
     }
+    //printf("Enter Your Option: (1/2/3/4) ");
+    //while(scanf(" %[1234]c",&option) == 0) {
+    //    fflush(stdin);
+    //}
     //scanf(" %c",&option);
+    return;
+}
+//---------------------
+void searchMenu() {
+    char thisName[MAX]={};
+    char code[150] = {};
+    setColor(207);
+    printf("***SEARCH MENU***\n");
+    setColor(7);
+    printf("Enter The Ussername To Search:");
+    scanf(" %[^\n]",thisName);
+    strcat(code, "search member ");
+    strcat(code, thisName);
+    strcat(code, ", ");
+    strcat(code, token);
+    strcat(code, "\n");
+    socketInitialize();
+    send(client_socket, code, sizeof(code), 0);
+
+    char buffer[MAX];
+    memset(buffer, 0,sizeof(buffer));
+    recv(client_socket, buffer, sizeof(buffer), 0);
+    cJSON* response = cJSON_Parse(buffer);
+    cJSON* Type = cJSON_GetObjectItem(response, "type");
+    cJSON* Content = cJSON_GetObjectItem(response, "content");
+    setColor(10);
+    if(strcmp(Type->valuestring, "Error") == 0)
+    {
+        setColor(12);
+        printf("\n%s",Content->valuestring);
+    }
+    else
+        printf("This User Is In This Channel");
+    delay(3);
+    setColor(7);
+    option = 's';
     return;
 }
 void quit(){
@@ -393,7 +547,7 @@ void sendMessage(){
     memset(buffer, 0,sizeof(buffer));
     recv(client_socket, buffer, sizeof(buffer), 0);
     cJSON* response = cJSON_Parse(buffer);
-    cJSON* Type = cJSON_GetObjectItemCaseSensitive(response, "type");
+    cJSON* Type = cJSON_GetObjectItem(response, "type");
     option = 's';
     return;
 }
@@ -422,7 +576,7 @@ void viewMembers(){
     strcat(code ,"\n");
     socketInitialize();
     send(client_socket, code, sizeof(code), 0);
-    char buffer[1000];
+    char buffer[10000];
     memset(buffer, 0,sizeof(buffer));
     recv(client_socket, buffer, sizeof(buffer), 0);
     cJSON* response = cJSON_Parse(buffer);
@@ -430,7 +584,7 @@ void viewMembers(){
     printf("***CHANNEL MEMBERS***\n");
     if(checkError(response,'3'))
     {
-        cJSON* members = cJSON_GetObjectItemCaseSensitive(response, "content");
+        cJSON* members = cJSON_GetObjectItem(response, "content");
         printItems(members,1);
     }
     printf("\nPress Any Key To Continue...");
@@ -446,7 +600,7 @@ void viewMessages(){
     strcat(code ,"\n");
     socketInitialize();
     send(client_socket, code, sizeof(code), 0);
-    char buffer[1000];
+    char buffer[10000];
     memset(buffer, 0,sizeof(buffer));
     recv(client_socket, buffer, sizeof(buffer), 0);
     cJSON* response = cJSON_Parse(buffer);
@@ -469,6 +623,7 @@ void printItems(cJSON* items,int option){
     setColor(7);
     if(option == 1)
     {
+        //printf("NUM: %d\n",cJSON_GetArraySize(items));
         for (int i = 0 ; i < cJSON_GetArraySize(items) ; i++)
         {
             cJSON * thisItem = cJSON_GetArrayItem(items, i);

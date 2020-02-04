@@ -1,0 +1,90 @@
+# depslib dependency file v1.0
+1577641784 source:c:\users\ali\desktop\taha\chat application\chat application\main.c
+	<stdbool.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	<winsock2.h>
+	"cJSON.h"
+	"cJSON.c"
+
+1575929324 c:\users\ali\desktop\taha\chat application\chat application\cjson.h
+	<stddef.h>
+
+1575929324 c:\users\ali\desktop\taha\chat application\chat application\cjson.c
+	<string.h>
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<limits.h>
+	<ctype.h>
+	<locale.h>
+	"cJSON.h"
+
+1580650374 source:j:\taha\chat application\chat application\main.c
+	<stdbool.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	<winsock2.h>
+	"cJSON.c"
+
+1580583606 j:\taha\chat application\chat application\cjson.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1580653810 j:\taha\chat application\chat application\cjson.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"cJSON.h"
+
+1580765034 source:d:\taha\chat application\chat application\main.c
+	<stdbool.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<math.h>
+	<time.h>
+	<winsock2.h>
+	"cJSON.c"
+
+1580653906 d:\taha\chat application\chat application\cjson.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"cJSON.h"
+
+1580583606 d:\taha\chat application\chat application\cjson.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1580791492 source:c:\users\taha\desktop\chat application\chat application\main.c
+	<stdbool.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<math.h>
+	<time.h>
+	<winsock2.h>
+	"cJSON.c"
+
+1580653906 c:\users\taha\desktop\chat application\chat application\cjson.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"cJSON.h"
+
+1580583606 c:\users\taha\desktop\chat application\chat application\cjson.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

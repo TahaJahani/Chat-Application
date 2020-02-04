@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "cJSON.h"
+//#include "cJSON.h"
 #include "cJSON.c"
 #include <dirent.h>
 //-------Variables---------------
@@ -47,12 +47,13 @@ void insertMessageInChannel(char* Sender, char* Content, cJSON* messages) {
 char* makeChannelJSON(char* Name) {
     cJSON *name = NULL;
     cJSON* messages = NULL;
-    cJSON* thisMessage = NULL;
+    //cJSON* thisMessage = NULL;
     cJSON *thisChannel = cJSON_CreateObject();
     name = cJSON_CreateString(Name);
-    messages = cJSON_CreateArray();
+    //messages = cJSON_CreateArray();
     messages = cJSON_AddArrayToObject(thisChannel, "messages");
     insertMessageInChannel("Server", "Channel Created", messages);
+    //printf("messages->child->child->valuestring: %s\n",messages->child->child->valuestring);
     cJSON_AddItemToObject(thisChannel, "name", name);
     char* buffer = calloc(500,1);
     buffer = cJSON_Print(thisChannel);
@@ -60,7 +61,7 @@ char* makeChannelJSON(char* Name) {
     free(thisChannel);
     free(name);
     free(messages);
-    free(thisMessage);
+    //free(thisMessage);
     return buffer;
 }
 //-------------------------------
@@ -111,7 +112,7 @@ int checkUsername_login(char* username, char* password) {
         readFile(fptr,buffer);
         fclose(fptr);
         cJSON* thisUser = cJSON_Parse(buffer);
-        cJSON* thisPass = cJSON_GetObjectItemCaseSensitive(thisUser,"password");
+        cJSON* thisPass = cJSON_GetObjectItem(thisUser,"password");
         if(strcasecmp(password, thisPass->valuestring) == 0) //check if the password is correct
         {
             //check if the user is already looged in
@@ -280,9 +281,9 @@ char* getChannel(char* name) {
     strcat(address, ".channel.json");
     FILE* fptr;
     if((fptr = fopen(address, "r")) == NULL)
-        printf("Error");
+        printf("Error Occured");
     int size = getFileSize(fptr);
-    printf("Size = %d\n", size);
+    //printf("Size = %d\n", size);
     char* buffer= calloc(size,1);
     //memset(buffer, 0, sizeof(buffer));
     readFile(fptr, buffer);
@@ -291,26 +292,13 @@ char* getChannel(char* name) {
 }
 //-------------------------------
 char* refreshChannel(char* newMessage, int senderIndex, int server) {
-    /*char address[120]={};
-    strcat(address, "Resources/Channels/");
-    strcat(address, allUsers[senderIndex].channel);
-    strcat(address, ".channel.json");
-    FILE* fptr;
-    if((fptr = fopen(address, "r")) == NULL)
-        printf("Error");
-    int size = getFileSize(fptr);
-    printf("Size = %d\n", size);
-    char buffer[size];
-    memset(buffer, 0, sizeof(buffer));
-    readFile(fptr, buffer);
-    fclose(fptr);*/
     char address[120]={};
     strcat(address, "Resources/Channels/");
     strcat(address, allUsers[senderIndex].channel);
     strcat(address, ".channel.json");
     FILE* fptr;
     if((fptr = fopen(address, "r")) == NULL)
-        printf("Error");
+        printf("Error Occured");
     int size = getFileSize(fptr);
     char* buffer;
     buffer = getChannel(allUsers[senderIndex].channel);
@@ -335,20 +323,22 @@ char* refreshChannel(char* newMessage, int senderIndex, int server) {
 }
 //-------------------------------
 char* refreshMessages(int userIndex) {
-    //int size = getFileSize(fptr);
     char* buffer;
     buffer = getChannel(allUsers[userIndex].channel);
     cJSON* channel = cJSON_Parse(buffer);
     cJSON* messages = cJSON_GetObjectItem(channel, "messages");
     cJSON* newList = cJSON_CreateObject();
-    cJSON* unreadMessages = cJSON_CreateArray();
+    //cJSON* unreadMessages = cJSON_CreateArray();
     cJSON* type = cJSON_CreateString("List");
     cJSON_AddItemToObject(newList,"type",type);
-    unreadMessages = cJSON_AddArrayToObject(newList, "content");
+    cJSON* unreadMessages = cJSON_AddArrayToObject(newList, "content");
     int numMessages = cJSON_GetArraySize(messages);
     free(buffer);
-    for(int i = allUsers[userIndex].read ; i < numMessages ; i++)
-        cJSON_AddItemReferenceToArray(unreadMessages, cJSON_GetArrayItem(messages,i));
+    //for(int i = allUsers[userIndex].read ; i < numMessages ; i++)
+    //{
+        //cJSON_AddItemReferenceToArray(unreadMessages, cJSON_GetArrayItem(messages,i));
+        cJSON_AddItemToArray(unreadMessages, cJSON_GetArrayItem(messages,allUsers[userIndex].read));
+    //}
     allUsers[userIndex].read = numMessages;
     buffer = cJSON_Print(newList);
     //freeing memory
@@ -395,9 +385,9 @@ char* findChannelMembers(int userIndex) {
     strcpy(channelName, allUsers[userIndex].channel);
     cJSON* newList = cJSON_CreateObject();
     cJSON* type = cJSON_CreateString("List");
-    cJSON* members = cJSON_CreateArray();
+    //cJSON* members = NULL;//cJSON_CreateArray();
     cJSON_AddItemToObject(newList, "type", type);
-    members = cJSON_AddArrayToObject(newList, "content");
+    cJSON* members = cJSON_AddArrayToObject(newList, "content");
     for(int i = 0 ; i < onlineUsers ; i++)
     {
         if(strcasecmp(allUsers[i].channel, channelName) == 0)
@@ -411,29 +401,6 @@ char* findChannelMembers(int userIndex) {
 }
 //-------------------------------
 char* logout(int index) {
-    /*for(int i = index; i < onlineUsers ; i++)
-    {
-        printf("i: %d, onlineUsers: %d",i,onlineUsers);
-        if(i == onlineUsers-1)
-        {
-            printf("begin if\n");
-            memset(allUsers[i].token, 0, 35);
-            memset(allUsers[i].channel, 0, 80);
-            memset(allUsers[i].username, 0, 80);
-            allUsers[i].read = 0;
-            allUsers[i].joined = 0;
-            printf("end if\n");
-        }else
-        {
-            printf("begin else\n");
-            strcpy(allUsers[i].token, allUsers[i+1].token);
-            strcpy(allUsers[i].channel, allUsers[i+1].channel);
-            strcpy(allUsers[i].username, allUsers[i+1].username);
-            allUsers[i].read = allUsers[i+1].read;
-            allUsers[i].joined = allUsers[i+1].joined;
-            printf("end else\n");
-        }
-    }*/
     allUsers[index] = allUsers[onlineUsers-1];
     memset(allUsers[onlineUsers-1].token, 0, 35);
     memset(allUsers[onlineUsers-1].channel, 0, 80);
@@ -446,5 +413,27 @@ char* logout(int index) {
         printf("%s\n",allUsers[i].username);*/
     char* buffer = makeMessageJSON("Successful","");
     return buffer;
+}
+//-------------------------------
+char* searchMemebers(int index, char* name) {
+    char* response;
+    int flag = 0, index2 = -1;
+    for(int i = 0 ; i < onlineUsers ; i++)
+    {
+        if(strcmp(allUsers[i].username,name) == 0)
+        {
+            flag = 1;
+            index2 = i;
+        }
+    }
+    if(flag)
+    {
+        if(strcmp(allUsers[index2].channel, allUsers[index].channel) == 0)
+            response = makeMessageJSON("Successful","");
+        else
+            response = makeMessageJSON("Error", "This user is not in this channel");
+    }else
+        response = makeMessageJSON("Error", "This username is invalid");
+    return response;
 }
 //-------------------------------
